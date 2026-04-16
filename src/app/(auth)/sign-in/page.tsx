@@ -15,6 +15,7 @@ import {
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/atomics/use-toast";
 import { useLoginMutation } from "@/services/auth.service";
@@ -27,7 +28,7 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-function SignIn() {
+function SignInContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -158,4 +159,10 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="px-6 py-24 lg:px-28">Loading...</div>}>
+      <SignInContent />
+    </Suspense>
+  );
+}
